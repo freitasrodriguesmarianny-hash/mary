@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroSaúde | Doenças Neurodegenerativas</title>
+    <!-- Fontes do Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Ícones (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS (Estilos) --- */
+        :root {
+            --primary-color: #2563eb; /* Azul Médico */
+            --secondary-color: #06b6d4; /* Ciano */
+            --dark-bg: #0f172a;
+            --light-bg: #f8fafc;
+            --text-color: #334155;
+            --white: #ffffff;
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: font-size 0.3s ease; /* Transição para acessibilidade */
+        }
+
+        /* --- Barra de Progresso --- */
+        #container-progresso {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: transparent;
+            z-index: 2000;
+        }
+        #barraDeProgresso {
+            height: 100%;
+            background: var(--gradient);
+            width: 0%;
+        }
+
+        /* Header & Nav */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- Botões de Acessibilidade --- */
+        .acessibilidade-btn {
+            background: var(--light-bg);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 5px;
+            transition: 0.3s;
+        }
+        .acessibilidade-btn:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--gradient);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0 2rem;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--white);
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Seções Gerais */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title .line {
+            width: 60px;
+            height: 4px;
+            background: var(--gradient);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* Sobre */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-bg);
+        }
+
+        .about-img img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Doenças (Cards) */
+        .diseases-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 5px solid transparent;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--secondary-color);
+        }
+
+        .card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-bg);
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Botão Ler Mais (Sanfona nos cards) --- */
+        .btn-ler-mais {
+            background: var(--light-bg);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            margin-top: auto;
+        }
+        .btn-ler-mais:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+        .texto-oculto {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-align: left;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-bg);
+            color: var(--white);
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .social-icons {
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            color: var(--white);
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Botão Voltar ao Topo */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: none; /* Escondido inicialmente */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            z-index: 999;
+            font-size: 1.2rem;
+        }
+
+        #backToTop:hover {
+            transform: translateY(-5px);
+            background: var(--secondary-color);
+        }
+
+        /* Animações */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                right: 0;
+                background: var(--white);
+                width: 100%;
+                text-align: center;
+                padding: 2rem;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de Progresso no Topo -->
+    <div id="container-progresso">
+        <div id="barraDeProgresso"></div>
+    </div>
+
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-brain"></i> NeuroSaúde
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" onclick="toggleMenu()">Início</a></li>
+                <li><a href="#about" onclick="toggleMenu()">Sobre</a></li>
+                <li><a href="#diseases" onclick="toggleMenu()">Doenças</a></li>
+                
+                <!-- Botões de Acessibilidade dentro do Menu -->
+                <li>
+                    <button class="acessibilidade-btn" onclick="mudarTamanhoLetra(1)" title="Aumentar Letra">A+</button>
+                    <button class="acessibilidade-btn" onclick="mudarTamanhoLetra(-1)" title="Diminuir Letra">A-</button>
+                </li>
+            </ul>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Entendendo as Doenças Neurodegenerativas</h1>
+            <p>Um guia informativo sobre Alzheimer, Parkinson, ELA e outras condições que afetam o sistema nervoso central.</p>
+            <a href="#about" class="btn">Saiba Mais</a>
+        </div>
+    </section>
+
+    <!-- Sobre -->
+    <section id="about">
+        <div class="section-title">
+            <h2>O que são?</h2>
+            <div class="line"></div>
+        </div>
+        <div class="about-grid">
+            <div class="about-text">
+                <h3>Degeneração Neural</h3>
+                <p>Doenças neurodegenerativas são condições caracterizadas pela progressiva degeneração e morte de neurônios (células nervosas) em várias áreas do sistema nervoso.</p>
+                <br>
+                <p>Isso leva a problemas com o movimento (chamados de ataxias) ou funcionamento mental (chamados de demências). Exemplos comuns incluem a Doença de Alzheimer e a Doença de Parkinson.</p>
+            </div>
+            <div class="about-img">
+                <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Células Nervosas">
+            </div>
+        </div>
+    </section>
+
+    <!-- Principais Doenças -->
+    <section id="diseases">
+        <div class="section-title">
+            <h2>Principais Condições</h2>
+            <div class="line"></div>
+        </div>
+        
+        <div class="diseases-container">
+            <!-- Card 1 -->
+            <div class="card">
+                <i class="fas fa-clipboard-list"></i>
+                <h3>Alzheimer</h3>
+                <p>A forma mais comum de demência. Afeta a memória, o pensamento e o comportamento.</p>
+                <button class="btn-ler-mais" onclick="mostrarMais(this)">Ler mais</button>
+                <div class="texto-oculto">
+                    Os sintomas geralmente se desenvolvem lentamente e pioram com o tempo. Interfere severamente nas tarefas diárias, sendo necessário o apoio familiar e médico constante.
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card">
+                <i class="fas fa-hand-holding-medical"></i>
+                <h3>Parkinson</h3>
+                <p>Uma desordem progressiva do sistema nervoso que afeta diretamente o controle do movimento.</p>
+                <button class="btn-ler-mais" onclick="mostrarMais(this)">Ler mais</button>
+                <div class="texto-oculto">
+                    Os sintomas começam gradualmente, às vezes com um tremor sutil em uma das mãos. Também pode causar rigidez muscular e lentidão nos movimentos.
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card">
+                <i class="fas fa-bolt"></i>
+                <h3>ELA</h3>
+                <p>A Esclerose Lateral Amiotrófica (Doença de Lou Gehrig) afeta os neurônios motores.</p>
+                <button class="btn-ler-mais" onclick="mostrarMais(this)">Ler mais</button>
+                <div class="texto-oculto">
+                    Causa fraqueza muscular progressiva. O cérebro perde a capacidade de iniciar e controlar o movimento muscular voluntário.
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card">
+                <i class="fas fa-dna"></i>
+                <h3>Huntington</h3>
+                <p>Uma doença hereditária rara que causa a degradação progressiva das células nervosas.</p>
+                <button class="btn-ler-mais" onclick="mostrarMais(this)">Ler mais</button>
+                <div class="texto-oculto">
+                    Afeta severamente as habilidades motoras e cognitivas. Geralmente, os sintomas começam a aparecer entre os 30 e 40 anos de idade.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="logo" style="justify-content: center; color: white; margin-bottom: 10px;">
+            <i class="fas fa-brain"></i> NeuroSaúde
+        </div>
+        <p>Trazendo informações claras e acessíveis sobre saúde neurológica.</p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+    </footer>
+
+    <!-- Botão Voltar ao Topo -->
+    <button id="backToTop" onclick="voltarAoTopo()" title="Voltar ao Topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+
+    <!-- --- JAVASCRIPT --- -->
+    <script>
+        // 1. Menu Mobile (Hambúrguer)
+        function toggleMenu() {
+            const navLinks = document.getElementById("navLinks");
+            navLinks.classList.toggle("active");
+        }
+
+        // 2. Acessibilidade (Aumentar e Diminuir Letra)
+        let tamanhoAtual = 16; 
+        function mudarTamanhoLetra(acao) {
+            tamanhoAtual += (acao * 2); 
+            if(tamanhoAtual > 24) tamanhoAtual = 24; // Limite máximo
+            if(tamanhoAtual < 14) tamanhoAtual = 14; // Limite mínimo
+            document.body.style.fontSize = tamanhoAtual + "px";
+        }
+
+        // 3. Botão "Ler Mais" (Sanfona nos cards)
+        function mostrarMais(botao) {
+            // Pega a div oculta que está logo abaixo do botão clicado
+            let textoOculto = botao.nextElementSibling;
+            
+            if (textoOculto.style.display === "block") {
+                textoOculto.style.display = "none";
+                botao.innerHTML = "Ler mais";
+            } else {
+                textoOculto.style.display = "block";
+                botao.innerHTML = "Ler menos";
+            }
+        }
+
+        // 4. Barra de Progresso e Botão Voltar ao Topo
+        window.onscroll = function() {
+            // Lógica da Barra de Progresso
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("barraDeProgresso").style.width = scrolled + "%";
+
+            // Lógica do Botão Voltar ao Topo
+            let botaoTopo = document.getElementById("backToTop");
+            if (winScroll > 300) { // Mostra o botão após descer 300px
+                botaoTopo.style.display = "block";
+            } else {
+                botaoTopo.style.display = "none";
+            }
+        };
+
+        // 5. Função de Voltar ao Topo (quando clica no botão)
+        function voltarAoTopo() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+</body>
+</html>
